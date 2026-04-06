@@ -57,24 +57,33 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define SPI_CLK_Pin GPIO_PIN_3
-#define SPI_CLK_GPIO_Port GPIOA
-#define SPI_MISO_Pin GPIO_PIN_4
-#define SPI_MISO_GPIO_Port GPIOA
-#define SPI_MOSI_Pin GPIO_PIN_5
-#define SPI_MOSI_GPIO_Port GPIOA
-#define SPI_CS_Pin GPIO_PIN_6
-#define SPI_CS_GPIO_Port GPIOA
-#define DWM_RST_Pin GPIO_PIN_7
-#define DWM_RST_GPIO_Port GPIOA
-#define DWM_WAKEUP_Pin GPIO_PIN_4
+#define B1_Pin GPIO_PIN_13
+#define B1_GPIO_Port GPIOC
+#define RCC_OSC32_OUT_Pin GPIO_PIN_14
+#define RCC_OSC32_OUT_GPIO_Port GPIOC
+#define RCC_OSC32_OUTC15_Pin GPIO_PIN_15
+#define RCC_OSC32_OUTC15_GPIO_Port GPIOC
+#define RCC_OSC_IN_Pin GPIO_PIN_0
+#define RCC_OSC_IN_GPIO_Port GPIOF
+#define RCC_OSC_OUT_Pin GPIO_PIN_1
+#define RCC_OSC_OUT_GPIO_Port GPIOF
+#define DWM_EXTON_Pin GPIO_PIN_0
+#define DWM_EXTON_GPIO_Port GPIOA
+#define DWM_WAKEUP_Pin GPIO_PIN_7
 #define DWM_WAKEUP_GPIO_Port GPIOC
-#define DWM_EXTON_Pin GPIO_PIN_6
-#define DWM_EXTON_GPIO_Port GPIOC
-#define STM_TX_Pin GPIO_PIN_9
-#define STM_TX_GPIO_Port GPIOA
-#define MCU_BOOT_Pin GPIO_PIN_8
-#define MCU_BOOT_GPIO_Port GPIOB
+#define DWM_RST_Pin GPIO_PIN_8
+#define DWM_RST_GPIO_Port GPIOA
+#define DWM_IRQ_Pin GPIO_PIN_9
+#define DWM_IRQ_GPIO_Port GPIOA
+#define DWM_IRQ_EXTI_IRQn EXTI9_5_IRQn
+#define T_SWDIO_Pin GPIO_PIN_13
+#define T_SWDIO_GPIO_Port GPIOA
+#define T_SWCLK_Pin GPIO_PIN_14
+#define T_SWCLK_GPIO_Port GPIOA
+#define T_SWO_Pin GPIO_PIN_3
+#define T_SWO_GPIO_Port GPIOB
+#define DWM_CS_Pin GPIO_PIN_6
+#define DWM_CS_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
