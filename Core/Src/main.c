@@ -23,22 +23,26 @@
 /* USER CODE BEGIN Includes */
 #include "uart.h"
 #include "dwm_port.h"
+#include "deca_device_api.h"
 #include "dwm_init.h"
-#include "dwm_radio.h"
+#include "uwb_responder.h"
 #include "uwb_ids.h"
-#include "uwb_twr_responder.h"
+#include "dwm_radio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -47,6 +51,7 @@ SPI_HandleTypeDef hspi1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -55,20 +60,12 @@ static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-/* --- helper: read/write 32-bit via dwt_*_reg --- */
-static void force_spi_slow(void)
-{
-    HAL_SPI_DeInit(&hspi1);
-    hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
-    hspi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
-    if (HAL_SPI_Init(&hspi1) != HAL_OK)
-        Error_Handler();
-}
-extern void dwt_configureframefilter(uint16_t enabletype, uint16_t filtermode);
+
 /* USER CODE END 0 */
 
 /**
@@ -104,38 +101,28 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   dbg_init(&huart2);
-  dbg_print("\r\n--- FOB TWR RESP (FF OFF) ---\r\n");
-
-  force_spi_slow();
-
-  HAL_GPIO_WritePin(DWM_EXTON_GPIO_Port, DWM_EXTON_Pin, GPIO_PIN_SET);
-  HAL_Delay(5);
+  dbg_print("ANCHOR boot\r\n");
 
   uint32_t devid = 0;
   int pr = dw3000_init(&devid);
-  dbg_printf("init ret=%d id=0x%08lX\r\n", pr, (unsigned long)devid);
-  if (pr != 0) { dbg_print("DW3000 INIT FAILED\r\n"); while (1) { HAL_Delay(200); } }
+  dbg_printf("dw3000_init ret=%d devid=0x%08lX\r\n", pr, (unsigned long)devid);
 
   int rr = dwm_radio_apply_default();
-  dbg_printf("radio ret=%d\r\n", rr);
-  if (rr != 0) { dbg_print("RADIO INIT FAILED\r\n"); while (1) { HAL_Delay(200); } }
+  dbg_printf("radio_apply_default ret=%d\r\n", rr);
+  dwt_configureframefilter(0,0);
+  uwb_responder_init(UWB_ID_A1);
 
-  dwt_configureframefilter(0, 0);
-  dbg_print("FF: disabled via dwt_configureframefilter(0,0)\r\n");
-
-  uwb_twr_responder_init(1);
-  dbg_print("FOB: TWR responder loop\r\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      uwb_twr_responder_step();
-  }
+	  uwb_responder_step();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+  }
   /* USER CODE END 3 */
 }
 
